@@ -1,0 +1,600 @@
+{
+  "title": "Staff Usage Overview",
+  "uid": "staff-overview-v2",
+  "schemaVersion": 38,
+  "version": 4,
+  "refresh": "1m",
+  "time": {
+    "from": "now-8h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Connected Devices",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 4
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "bffl0m5t9eoe8e"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "bffl0m5t9eoe8e"
+          },
+          "expr": "count(sum by (srcmac) (count_over_time({job=\"fortigate\"} | logfmt | srcmac != \"\" [8h])))",
+          "queryType": "range",
+          "instant": true,
+          "legendFormat": "Devices"
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "none"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "displayName": "Connected Devices"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "Total Data Downloaded",
+      "type": "stat",
+      "gridPos": {
+        "x": 4,
+        "y": 0,
+        "w": 4,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "effl0nh8i0c8we"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "effl0nh8i0c8we"
+          },
+          "expr": "sum(fortigate_bytes_received_1h)",
+          "instant": true,
+          "legendFormat": "Total"
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "none"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "decbytes",
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "displayName": "Total Downloaded"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "Social Media Sessions",
+      "type": "stat",
+      "gridPos": {
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 4
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "bffl0m5t9eoe8e"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "bffl0m5t9eoe8e"
+          },
+          "expr": "sum(count_over_time({job=\"fortigate\"} | logfmt | appcat = \"Social.Media\" [8h]))",
+          "queryType": "range",
+          "instant": true,
+          "legendFormat": "Sessions"
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "none"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "orange",
+            "mode": "fixed"
+          },
+          "displayName": "Social Media Sessions"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "Streaming Sessions",
+      "type": "stat",
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 4,
+        "h": 4
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "bffl0m5t9eoe8e"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "bffl0m5t9eoe8e"
+          },
+          "expr": "sum(count_over_time({job=\"fortigate\"} | logfmt | appcat = \"Video/Audio\" [8h]))",
+          "queryType": "range",
+          "instant": true,
+          "legendFormat": "Sessions"
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "none"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "purple",
+            "mode": "fixed"
+          },
+          "displayName": "Streaming Sessions"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "P2P Detected",
+      "type": "stat",
+      "gridPos": {
+        "x": 16,
+        "y": 0,
+        "w": 4,
+        "h": 4
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "bffl0m5t9eoe8e"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "bffl0m5t9eoe8e"
+          },
+          "expr": "sum(count_over_time({job=\"fortigate\"} | logfmt | app =~ \"BitTorrent|uTorrent|eDonkey|Gnutella|DHT|P2P\" [8h]))",
+          "queryType": "range",
+          "instant": true,
+          "legendFormat": "Sessions"
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "none"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "fixed"
+          },
+          "displayName": "P2P Sessions"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "title": "Total Sessions",
+      "type": "stat",
+      "gridPos": {
+        "x": 20,
+        "y": 0,
+        "w": 4,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "effl0nh8i0c8we"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "effl0nh8i0c8we"
+          },
+          "expr": "sum(fortigate_sessions_1h)",
+          "instant": true,
+          "legendFormat": "Sessions"
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "none"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "semi-dark-blue",
+            "mode": "fixed"
+          },
+          "displayName": "Total Sessions"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "title": "Data Downloaded per Device",
+      "type": "bargauge",
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "effl0nh8i0c8we"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "effl0nh8i0c8we"
+          },
+          "expr": "sort_desc(sum by (srcname) (fortigate_bytes_received_1h))",
+          "instant": true,
+          "legendFormat": "{{srcname}}"
+        }
+      ],
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "displayMode": "gradient",
+        "showUnfilled": true
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "decbytes",
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "displayName": "${__field.labels.srcname}"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "title": "Data Uploaded per Device",
+      "type": "bargauge",
+      "gridPos": {
+        "x": 12,
+        "y": 4,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "effl0nh8i0c8we"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "effl0nh8i0c8we"
+          },
+          "expr": "sort_desc(sum by (srcname) (fortigate_bytes_sent_1h))",
+          "instant": true,
+          "legendFormat": "{{srcname}}"
+        }
+      ],
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "displayMode": "gradient",
+        "showUnfilled": true
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "decbytes",
+          "color": {
+            "mode": "continuous-BlPu"
+          },
+          "displayName": "${__field.labels.srcname}"
+        }
+      }
+    },
+    {
+      "id": 9,
+      "title": "Top Apps by Data Usage",
+      "type": "bargauge",
+      "gridPos": {
+        "x": 0,
+        "y": 12,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "effl0nh8i0c8we"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "effl0nh8i0c8we"
+          },
+          "expr": "sort_desc(topk(10, sum by (app) (fortigate_bytes_received_1h)))",
+          "instant": true,
+          "legendFormat": "{{app}}"
+        }
+      ],
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "displayMode": "gradient",
+        "showUnfilled": true
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "decbytes",
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "displayName": "${__field.labels.app}"
+        }
+      }
+    },
+    {
+      "id": 10,
+      "title": "App Category Data Usage",
+      "type": "piechart",
+      "gridPos": {
+        "x": 12,
+        "y": 12,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "effl0nh8i0c8we"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "effl0nh8i0c8we"
+          },
+          "expr": "sort_desc(sum by (appcat) (fortigate_bytes_received_1h))",
+          "instant": true,
+          "legendFormat": "{{appcat}}"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "right"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "decbytes",
+          "displayName": "${__field.labels.appcat}"
+        }
+      }
+    },
+    {
+      "id": 11,
+      "title": "Device Activity Timeline",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 20,
+        "w": 24,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "effl0nh8i0c8we"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "effl0nh8i0c8we"
+          },
+          "expr": "sum by (srcname) (rate(fortigate_bytes_received_total[5m]))",
+          "legendFormat": "{{srcname}}"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "Bps",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10
+          },
+          "displayName": "${__field.labels.srcname}"
+        }
+      }
+    },
+    {
+      "id": 12,
+      "title": "Social Media Activity Timeline",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 28,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "bffl0m5t9eoe8e"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "bffl0m5t9eoe8e"
+          },
+          "expr": "sum by (srcname) (count_over_time({job=\"fortigate\"} | logfmt | srcname != \"\" | appcat = \"Social.Media\" [5m]))",
+          "queryType": "range",
+          "legendFormat": "{{srcname}}"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10
+          },
+          "displayName": "${__field.labels.srcname}"
+        }
+      }
+    },
+    {
+      "id": 13,
+      "title": "Streaming Activity Timeline",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 12,
+        "y": 28,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "bffl0m5t9eoe8e"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "bffl0m5t9eoe8e"
+          },
+          "expr": "sum by (srcname) (count_over_time({job=\"fortigate\"} | logfmt | srcname != \"\" | appcat = \"Video/Audio\" [5m]))",
+          "queryType": "range",
+          "legendFormat": "{{srcname}}"
+        }
+      ],
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10
+          },
+          "displayName": "${__field.labels.srcname}"
+        }
+      }
+    }
+  ]
+}

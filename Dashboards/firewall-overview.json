@@ -1,0 +1,183 @@
+{
+  "title": "Firewall Overview",
+  "uid": "firewall-overview-v1",
+  "schemaVersion": 38,
+  "version": 2,
+  "refresh": "30s",
+  "time": { "from": "now-1h", "to": "now" },
+  "panels": [
+    {
+      "id": 1,
+      "title": "CPU Usage",
+      "type": "gauge",
+      "gridPos": { "x": 0, "y": 0, "w": 4, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "effl0nh8i0c8we" },
+      "targets": [{ "refId": "A", "expr": "fgSysCpuUsage", "instant": true, "legendFormat": "CPU %" }],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdMarkers": true },
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "displayName": "CPU", "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 60 }, { "color": "red", "value": 85 }] }, "color": { "mode": "thresholds" } } }
+    },
+    {
+      "id": 2,
+      "title": "Memory Usage",
+      "type": "gauge",
+      "gridPos": { "x": 4, "y": 0, "w": 4, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "effl0nh8i0c8we" },
+      "targets": [{ "refId": "A", "expr": "fgSysMemUsage", "instant": true, "legendFormat": "Memory %" }],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdMarkers": true },
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "displayName": "Memory", "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 70 }, { "color": "red", "value": 90 }] }, "color": { "mode": "thresholds" } } }
+    },
+    {
+      "id": 3,
+      "title": "Active Sessions",
+      "type": "stat",
+      "gridPos": { "x": 8, "y": 0, "w": 4, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "effl0nh8i0c8we" },
+      "targets": [{ "refId": "A", "expr": "fgSysSesCount", "instant": true }],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
+      "fieldConfig": { "defaults": { "displayName": "Active Sessions", "color": { "fixedColor": "blue", "mode": "fixed" } } }
+    },
+    {
+      "id": 4,
+      "title": "Session Rate",
+      "type": "stat",
+      "gridPos": { "x": 12, "y": 0, "w": 4, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "effl0nh8i0c8we" },
+      "targets": [{ "refId": "A", "expr": "fgSysSesRate", "instant": true }],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
+      "fieldConfig": { "defaults": { "unit": "reqps", "displayName": "Session Rate", "color": { "fixedColor": "semi-dark-green", "mode": "fixed" } } }
+    },
+    {
+      "id": 5,
+      "title": "WAN Download",
+      "type": "stat",
+      "gridPos": { "x": 16, "y": 0, "w": 4, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "effl0nh8i0c8we" },
+      "targets": [{ "refId": "A", "expr": "rate(ifInOctets_total{ifName=\"wan\"}[2m]) * 8", "instant": true, "legendFormat": "WAN Down" }],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
+      "fieldConfig": { "defaults": { "unit": "bps", "displayName": "WAN Download", "color": { "fixedColor": "green", "mode": "fixed" } } }
+    },
+    {
+      "id": 6,
+      "title": "WAN Upload",
+      "type": "stat",
+      "gridPos": { "x": 20, "y": 0, "w": 4, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "effl0nh8i0c8we" },
+      "targets": [{ "refId": "A", "expr": "rate(ifOutOctets_total{ifName=\"wan\"}[2m]) * 8", "instant": true, "legendFormat": "WAN Up" }],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background", "graphMode": "area" },
+      "fieldConfig": { "defaults": { "unit": "bps", "displayName": "WAN Upload", "color": { "fixedColor": "blue", "mode": "fixed" } } }
+    },
+    {
+      "id": 7,
+      "title": "WAN Throughput",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 5, "w": 24, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "effl0nh8i0c8we" },
+      "targets": [
+        { "refId": "A", "expr": "rate(ifInOctets_total{ifName=\"wan\"}[2m]) * 8", "legendFormat": "Download" },
+        { "refId": "B", "expr": "rate(ifOutOctets_total{ifName=\"wan\"}[2m]) * 8", "legendFormat": "Upload" }
+      ],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "fieldConfig": {
+        "defaults": { "unit": "bps", "custom": { "lineWidth": 2, "fillOpacity": 15 } },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "Download" }, "properties": [{ "id": "color", "value": { "fixedColor": "green", "mode": "fixed" } }] },
+          { "matcher": { "id": "byName", "options": "Upload" }, "properties": [{ "id": "color", "value": { "fixedColor": "blue", "mode": "fixed" } }] }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "title": "LAN Throughput",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 13, "w": 24, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "effl0nh8i0c8we" },
+      "targets": [
+        { "refId": "A", "expr": "rate(ifInOctets_total{ifName=\"lan\"}[2m]) * 8", "legendFormat": "LAN In" },
+        { "refId": "B", "expr": "rate(ifOutOctets_total{ifName=\"lan\"}[2m]) * 8", "legendFormat": "LAN Out" },
+        { "refId": "C", "expr": "rate(ifInOctets_total{ifName=\"lan1\"}[2m]) * 8", "legendFormat": "LAN1 In" },
+        { "refId": "D", "expr": "rate(ifOutOctets_total{ifName=\"lan1\"}[2m]) * 8", "legendFormat": "LAN1 Out" }
+      ],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "fieldConfig": { "defaults": { "unit": "bps", "custom": { "lineWidth": 2, "fillOpacity": 10 } } }
+    },
+    {
+      "id": 9,
+      "title": "CPU & Memory Over Time",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 21, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "effl0nh8i0c8we" },
+      "targets": [
+        { "refId": "A", "expr": "fgSysCpuUsage", "legendFormat": "CPU %" },
+        { "refId": "B", "expr": "fgSysMemUsage", "legendFormat": "Memory %" }
+      ],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "custom": { "lineWidth": 2, "fillOpacity": 10 } } }
+    },
+    {
+      "id": 10,
+      "title": "Active Sessions Over Time",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 21, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "effl0nh8i0c8we" },
+      "targets": [
+        { "refId": "A", "expr": "fgSysSesCount", "legendFormat": "Active Sessions" },
+        { "refId": "B", "expr": "fgSysSesRate", "legendFormat": "Session Rate/s" }
+      ],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "fieldConfig": { "defaults": { "custom": { "lineWidth": 2, "fillOpacity": 10 }, "color": { "mode": "palette-classic" } } }
+    },
+    {
+      "id": 11,
+      "title": "Interface Status",
+      "type": "table",
+      "gridPos": { "x": 0, "y": 29, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "effl0nh8i0c8we" },
+      "targets": [{ "refId": "A", "expr": "ifOperStatus", "instant": true, "legendFormat": "{{ifName}}" }],
+      "transformations": [
+        { "id": "labelsToFields", "options": { "mode": "columns" } },
+        { "id": "organize", "options": { "renameByName": { "ifName": "Interface", "Value": "Status" }, "excludeByName": { "Time": true, "instance": true, "job": true, "__name__": true, "ifIndex": true } } },
+        { "id": "sortBy", "options": { "fields": [{ "displayName": "Interface", "desc": false }] } }
+      ],
+      "options": { "showHeader": true },
+      "fieldConfig": {
+        "defaults": { "custom": { "align": "center" } },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Status" },
+            "properties": [
+              { "id": "mappings", "value": [{ "type": "value", "options": { "1": { "text": "UP", "color": "green" }, "2": { "text": "DOWN", "color": "red" } } }] },
+              { "id": "custom.displayMode", "value": "color-background" },
+              { "id": "color", "value": { "mode": "thresholds" } }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "title": "Total Data Per Interface",
+      "type": "bargauge",
+      "gridPos": { "x": 12, "y": 29, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "effl0nh8i0c8we" },
+      "targets": [
+        { "refId": "A", "expr": "sort_desc(ifInOctets > 0)", "instant": true, "legendFormat": "In — {{ifName}}" },
+        { "refId": "B", "expr": "sort_desc(ifOutOctets > 0)", "instant": true, "legendFormat": "Out — {{ifName}}" }
+      ],
+      "options": { "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"] }, "displayMode": "gradient", "showUnfilled": true },
+      "fieldConfig": { "defaults": { "unit": "decbytes", "color": { "mode": "continuous-GrYlRd" } } }
+    },
+    {
+      "id": 13,
+      "title": "Firewall Log Rate",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 37, "w": 24, "h": 7 },
+      "datasource": { "type": "loki", "uid": "bffl0m5t9eoe8e" },
+      "targets": [
+        { "refId": "A", "expr": "sum(count_over_time({job=\"fortigate\"} [1m]))", "queryType": "range", "legendFormat": "Total Logs/min" },
+        { "refId": "B", "expr": "sum(count_over_time({job=\"fortigate\"} | logfmt | subtype=\"forward\" [1m]))", "queryType": "range", "legendFormat": "Forwarded/min" }
+      ],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "fieldConfig": { "defaults": { "custom": { "lineWidth": 2, "fillOpacity": 10 }, "color": { "mode": "palette-classic" } } }
+    }
+  ]
+}
