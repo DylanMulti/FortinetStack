@@ -126,4 +126,4 @@ sudo systemctl enable monitoring.service
 
 ---
 
-*Built and maintained by [Multi IT — Integrated ICT Solutions](https://www.multiit.co.za)* 
+*Built and maintained by [Multi IT — Integrated ICT Solutions](https://multiit.co/)* 
