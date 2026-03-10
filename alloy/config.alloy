@@ -1,0 +1,20 @@
+local.file_match "fortigate_logs" {
+  path_targets = [{
+    __path__ = "/var/log/fortigate.log",
+  }]
+}
+
+loki.source.file "fortigate" {
+  targets    = local.file_match.fortigate_logs.targets
+  forward_to = [loki.write.default.receiver]
+}
+
+loki.write "default" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+  external_labels = {
+    job    = "fortigate",
+    source = "syslog",
+  }
+}

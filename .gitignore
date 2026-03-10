@@ -1,0 +1,13 @@
+# Data volumes - never commit data
+loki/data/
+prometheus/data/
+grafana/data/
+
+# Sensitive overrides
+docker-compose.override.yml
+*.env
+.env*
+
+# OS junk
+.DS_Store
+Thumbs.db
